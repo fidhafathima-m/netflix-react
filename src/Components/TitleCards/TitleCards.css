@@ -14,10 +14,16 @@
     display: none;
 }
 .card-list img {
-    width: 160px;
+    width: 200px;
     border-radius: 4px;
 }
 .card-list .card {
     position: relative;
+    text-decoration: none;
+}
+.card p {
+    font-size: 14px;
+    text-decoration: none;
+    color: white;
 }
 
