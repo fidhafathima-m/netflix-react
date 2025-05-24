@@ -1,16 +1,19 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import './Navbar.css'
 import logo from '../../assets/logo.png'
 import searchIcon from '../../assets/search_icon.svg'
 import bellIcon from '../../assets/bell_icon.svg'
 import profileImg from '../../assets/profile_img.png'
 import caretIcon from '../../assets/caret_icon.svg'
-import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../../Context/AuthContext'
+import netflixSpinner from '../../assets/netflix_spinner.gif'
 
 const Navbar = () => {
 
   const navRef = useRef();
-  const navigate = useNavigate();
+  const {logout} = useContext(AuthContext)
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
   const handleScroll = () => {
     if (window.scrollY >= 80) {
@@ -30,13 +33,21 @@ const Navbar = () => {
     const redirectToLogin = () => {
         const confirm = window.confirm("Are you sure to Sign out?")
         if(confirm) {
-            navigate('/login');
+            setLoading(true)
+            setTimeout(() => {
+              logout();
+              setLoading(false);
+            }, 1000)
         }
         
     }
 
 
-  return (
+  return loading ? (
+    <div className="navbar-spinner">
+      <img src={netflixSpinner} alt="Loading" />
+    </div>
+  ) : (
     <div className='navbar' ref={navRef}>
       <div className="navbar-left">
         <img src={logo} alt="" />

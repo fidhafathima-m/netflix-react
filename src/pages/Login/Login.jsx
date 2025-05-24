@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import './Login.css'
 import logo from '../../assets/logo.png'
 import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { AuthContext } from '../../Context/AuthContext';
+import netflixSpinner from '../../assets/netflix_spinner.gif'
 
 
 const Login = () => {
@@ -15,27 +17,100 @@ const Login = () => {
   });
   const [errors, setErrors] = useState('')
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false)
+
+  const {login} = useContext(AuthContext)
 
 
   // Form Validation
   const formValidate = () => {
     const newErrors = {};
 
-    if(signState === 'Sign Up' && !formData.name.trim()) {
-      newErrors.name = "Name is required!"
+    if (signState === 'Sign Up') {
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required!";
+    } else {
+      if (formData.name.length < 2) {
+        newErrors.name = "Name must be at least 2 characters";
+      }
+      if (formData.name.length > 50) {
+        newErrors.name = "Name cannot exceed 50 characters";
+      }
+      if (/^\s+|\s+$/.test(formData.name)) {
+        newErrors.name = "Name cannot start or end with whitespace";
+      }
+      if (/_{2,}/.test(formData.name)) {
+        newErrors.name = "Name cannot contain multiple underscores in a row";
+      }
+      if (/[^a-zA-Z0-9 _-]/.test(formData.name)) {
+        newErrors.name = "Name contains invalid characters";
+      }
+      if (/^\d+$/.test(formData.name)) {
+        newErrors.name = "Name cannot be all numbers";
+      }
     }
+  }
 
     if(!formData.email.trim()) {
       newErrors.email = "Email is required!"
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid"
+    } 
+    else {
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = "Email is invalid";
+      }
+      if(formData.email.length > 254) {
+        newErrors.email = "Email cannot exceed 254 characters";
+      }
+      if(/\.{2,}/.test(formData.email.split('@')[0])) {
+        newErrors.email = "Email contains consecutive dots";
+      }
+      if(/^\.|\.@|@\.|\.$/.test(formData.email)) {
+        newErrors.email = "Email has dots in invalid positions";
+      }
     }
 
     if(!formData.password) {
       newErrors.password = "Password is required"
-    } else if(formData.password.length < 6) {
-      newErrors.password = "Password must be atleast 6 characters"
+    }  
+    else {
+      if(formData.password.length < 8) {
+        newErrors.password = "Password must be at least 8 characters";
+      }
+      if(formData.password.length > 128) {
+        newErrors.password = "Password cannot exceed 128 characters";
+      }
+      if(!/[A-Z]/.test(formData.password)) {
+        newErrors.password = "Password must contain at least one uppercase letter";
+      }
+      if(!/[a-z]/.test(formData.password)) {
+        newErrors.password = "Password must contain at least one lowercase letter";
+      }
+      if(!/[0-9]/.test(formData.password)) {
+        newErrors.password = "Password must contain at least one number";
+      }
+      if(!/[^A-Za-z0-9]/.test(formData.password)) {
+        newErrors.password = "Password must contain at least one special character";
+      }
+      if(/\s/.test(formData.password)) {
+        newErrors.password = "Password cannot contain whitespace";
+      }
+      if(/(.)\1{2,}/.test(formData.password)) {
+        newErrors.password = "Password cannot contain repeated characters (more than 2)";
+      }
     }
+
+    const commonPasswords = ['password', '12345678', 'qwerty', 'letmein'];
+    if(commonPasswords.includes(formData.password.toLowerCase())) {
+      newErrors.password = "Password is too common, choose a stronger one";
+    }
+
+    if(formData.name && formData.password.toLowerCase().includes(formData.name.toLowerCase())) {
+      newErrors.password = "Password should not contain your name";
+    }
+    if(formData.email && formData.password.toLowerCase().includes(formData.email.split('@')[0].toLowerCase())) {
+      newErrors.password = "Password should not contain your email";
+    }
+
     return newErrors;
   }
 
@@ -52,12 +127,52 @@ const Login = () => {
     const formErrors = formValidate();
     setErrors(formErrors);
     if (Object.keys(formErrors).length === 0) {
-      console.log(`${signState} with data:`, formData);
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      if(signState === 'Sign Up') {
+        const userExists = users.some(user => user.email === formData.email)
+        if(userExists) {
+          setErrors({email: 'Email is already registered'})
+          return;
+        }
+        users.push({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          remember: formData.remember
+        });
+        localStorage.setItem('users', JSON.stringify(users));
+        alert("Registration Successfull. Please Sign In.");
+        setSignState('Sign In');
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          remember: false
+        })
+      } else {
+        const existingUser = users.find(
+          user => user.email === formData.email && user.password === formData.password
+        )
+        if(!existingUser) {
+          setErrors({email: 'Invalid Email or Password'})
+          return;
+        }
+        setLoading(true)
+        setTimeout(() => {
+          login(existingUser);
+          setLoading(false)
+        }, 1000)
+        
+      }
     }
   }
 
   return (
-    <div className='login'>
+    loading 
+    ? <div className='login-spinner'>
+      <img src={netflixSpinner} alt="Loading..." />
+    </div> 
+    : <div className='login'>
       <img src={logo} alt=""  className='login-logo'/>
       <div className="login-form">
         <h1>{signState}</h1>
@@ -96,7 +211,7 @@ const Login = () => {
 
           <button>{signState}</button>
 
-          <div className="form-help">
+          {/* <div className="form-help">
             <div className="remember">
               <input  type="checkbox" 
                       name='remember'
@@ -106,7 +221,7 @@ const Login = () => {
             </div>
             
             <p>Need help?</p>
-          </div>
+          </div> */}
         </form>
         <div className="form-switch">
           {signState === 'Sign In'
