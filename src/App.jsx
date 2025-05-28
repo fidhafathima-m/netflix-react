@@ -3,7 +3,7 @@ import Home from './pages/Home/Home'
 import { Routes, Route } from 'react-router-dom'
 import Login from './pages/Login/Login'
 import Player from './pages/Player/Player'
-import WatchlistPage from './components/Watchlist/Watchlist'
+import WatchlistPage from './pages/Watchlist/Watchlist'
 
 const App = () => {
   return (
