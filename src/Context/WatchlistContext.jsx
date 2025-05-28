@@ -8,40 +8,38 @@ export const WatchlistProvider = ({ children }) => {
   const [watchlist, setWatchlist] = useState([]);
 
   useEffect(() => {
-    if (netflixUser) {
-      const allWatchlists = JSON.parse(localStorage.getItem('watchlists')) || {};
-      setWatchlist(allWatchlists[netflixUser.uid] || []);
-    } else {
-      setWatchlist([]);
-    }
-  }, [netflixUser]);
+  if (netflixUser) {
+    const allWatchlists = JSON.parse(localStorage.getItem('watchlists')) || {};
+    setWatchlist(allWatchlists[netflixUser.email] || []);
+  } else {
+    setWatchlist([]);
+  }
+}, [netflixUser]);
+
 
   const toggleWatchlist = (movieId) => {
-    if (!netflixUser) {
-      return false;
-    }
+  if (!netflixUser) {
+    return false;
+  }
 
-    const allWatchlists = JSON.parse(localStorage.getItem('watchlists')) || {};
-    
-    const currentWatchlist = allWatchlists[netflixUser.uid] || [];
+  const allWatchlists = JSON.parse(localStorage.getItem('watchlists')) || {};
+  const currentWatchlist = allWatchlists[netflixUser.email] || [];
 
-    const updatedWatchlist = currentWatchlist.includes(movieId)
-      ? currentWatchlist.filter(id => id !== movieId)
-      : [...currentWatchlist, movieId];
+  const updatedWatchlist = currentWatchlist.includes(movieId)
+    ? currentWatchlist.filter(id => id !== movieId)
+    : [...currentWatchlist, movieId];
 
-    const updatedWatchlists = {
-      ...allWatchlists,
-      [netflixUser.uid]: updatedWatchlist
-    };
-
-    localStorage.setItem('watchlists', JSON.stringify(updatedWatchlists));
-
-    if (netflixUser) {
-      setWatchlist(updatedWatchlist);
-    }
-    
-    return !currentWatchlist.includes(movieId);
+  const updatedWatchlists = {
+    ...allWatchlists,
+    [netflixUser.email]: updatedWatchlist,
   };
+
+  localStorage.setItem('watchlists', JSON.stringify(updatedWatchlists));
+  setWatchlist(updatedWatchlist);
+
+  return !currentWatchlist.includes(movieId);
+};
+
 
   return (
     <WatchlistContext.Provider value={{ watchlist, toggleWatchlist }}>
