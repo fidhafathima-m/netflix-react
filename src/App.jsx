@@ -1,9 +1,9 @@
 import React from 'react'
-import Home from './components/Home/Home'
+import Home from './pages/Home/Home'
 import { Routes, Route } from 'react-router-dom'
-import Login from './components/Login/Login'
-import Player from './/components/Player/Player'
-import WatchlistPage from './components/Watchlist/Watchlist'
+import Login from './pages/Login/Login'
+import Player from './pages/Player/Player'
+import WatchlistPage from './pages/Watchlist/Watchlist'
 
 const App = () => {
   return (
