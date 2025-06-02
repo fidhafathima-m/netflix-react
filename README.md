@@ -1,7 +1,6 @@
 # 🎬 Netflix Clone - React Project
 
-![Netflix Clone Screenshot](https://via.placeholder.com/800x400?text=Netflix+Clone+Screenshot)  
-**Live Demo:** [https://f-netfliks-clone.netlify.app/home](https://f-netfliks-clone.netlify.app/home)
+**Live Demo:** [https://f-netfliks-clone.netlify.app](https://f-netfliks-clone.netlify.app)
 
 ## ✨ Features
 
@@ -43,16 +42,3 @@
 | State Management| Context API       |
 | Hosting         | Netlify           |
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js (v14+ recommended)
-- npm or yarn
-- TMDB API key (free tier available)
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/fidhafathima-m/netflix-react.git
