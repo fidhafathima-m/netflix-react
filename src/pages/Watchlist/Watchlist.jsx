@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../Context/AuthContext.js';
 import { WatchlistContext } from '../../Context/WatchlistContext';
-import TitleCards from '../../components/TitleCards/TitleCards.jsx';
+import TitleCards from '@/components/TitleCards/TitleCards.jsx'
 import { useNavigate } from 'react-router-dom';
 import backArrow from '../../assets/back_arrow_icon.png';
 import './Watchlist.css';
