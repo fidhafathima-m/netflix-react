@@ -1,12 +1,58 @@
-# React + Vite
+# 🎬 Netflix Clone - React Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Netflix Clone Screenshot](https://via.placeholder.com/800x400?text=Netflix+Clone+Screenshot)  
+**Live Demo:** [https://f-netfliks-clone.netlify.app/home](https://f-netfliks-clone.netlify.app/home)
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **User Authentication** 🔐
+  - Secure sign up with name, email and password
+  - Login with email and password
+  - Protected routes for authenticated users
 
-## Expanding the ESLint configuration
+- **Movie Browsing** 🎥
+  - Browse trending/popular movies with attractive posters
+  - Organized by categories (Trending, Top Rated, etc.)
+  - Responsive grid layout
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Movie Details** 📽️
+  - Detailed view when clicking any movie
+  - Embedded YouTube trailer
+  - Movie information (release date, rating, synopsis)
+  - "Add to Watchlist" button
+
+- **Watchlist Management** ❤️
+  - Add/remove movies to your personal watchlist
+  - View all saved movies in "My List" section
+  - Access watchlist from any page via navbar
+
+- **Responsive Design** 📱💻
+  - Fully responsive across all devices
+  - Mobile-friendly navigation
+  - Adaptive layouts for different screen sizes
+
+## 🛠 Tech Stack
+
+| Category        | Technologies Used |
+|-----------------|-------------------|
+| Frontend        | React.js, JSX     |
+| Routing         | React Router v6   |
+| Build Tool      | Vite              |
+| Styling         | CSS Modules       |
+| API             | TMDB API          |
+| State Management| Context API       |
+| Hosting         | Netlify           |
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v14+ recommended)
+- npm or yarn
+- TMDB API key (free tier available)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/fidhafathima-m/netflix-react.git
